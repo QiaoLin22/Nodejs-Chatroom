@@ -1,0 +1,30 @@
+{
+  "name": "express-session-authenticator-starter",
+  "version": "1.0.0",
+  "description": "A tutorial on session based user authentication using Passport JS",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "connect-mongo": "^3.1.2",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.1.3",
+    "express": "^4.17.1",
+    "express-flash": "0.0.2",
+    "express-flash-message": "^1.0.6",
+    "express-flash-messages": "^0.1.1",
+    "express-session": "^1.17.0",
+    "jade": "^1.11.0",
+    "mongodb": "^2.2.33",
+    "mongoose": "^5.7.12",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "path": "^0.12.7",
+    "pug": "^3.0.0",
+    "socket.io": "^2.3.0"
+  }
+}
