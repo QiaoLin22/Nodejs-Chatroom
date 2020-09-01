@@ -1,20 +1,20 @@
 const router = require('express').Router();
 const passport = require('passport');
-const savePassword = require('../lib/passwordUtils').savePassword;
-const connectdb = require('../config/database')
+const savePassword = require('../lib/psMiddleware').savePs;
+const connectdb = require('../config/model')
 const User = connectdb.models.User;
 const path = require('path')
 
  router.post('/', passport.authenticate('local', { failureRedirect: '/wrong-password', successRedirect: '/chatroom' }));
 
- router.post('/register', (req, res, next) => {
+ router.post('/register', (req, res) => {
     const checkname = req.body.username
     User.findOne({ username: checkname })
         .then((user) => {
             if (!user){
-                const saltHash = savePassword(req.body.password);
-                const salt = saltHash.salt;
-                const hash = saltHash.hash;
+                const helper = savePassword(req.body.password);
+                const salt = helper.salt;
+                const hash = helper.hash;
                 const newUser = new User({
                 username: req.body.username,
                 hash: hash,
@@ -38,47 +38,50 @@ const path = require('path')
     
  });
 
-router.get('/', (req, res, next) => {
+router.get('/', (req, res) => {
     res.render('login')
 });
 
 
-router.get('/register', (req, res, next) => {
+router.get('/register', (req, res) => {
     res.render('register')
 });
 
 
-router.get('/chatroom', (req, res, next) => {
+router.get('/chatroom', (req, res) => {
     if(req.session.passport === undefined){
         res.redirect('/')
     }
-    const id = (req.session.passport.user)
+    else {
+            const id = (req.session.passport.user)
 
-    if (req.isAuthenticated()) {
-        User.findOne({ _id: id })
-        .then((user) => {
-            var username = user.username
-            res.render('index',{username : username})
-        })
-        .catch((err) => {   
-            console.log(err)
-    });
-        
-    } else {
-        res.send('<h1>You are not authenticated</h1><p><a href="/">Login</a></p>');
+        if (req.isAuthenticated()) {
+            User.findOne({ _id: id })
+            .then((user) => {
+                var username = user.username
+                res.render('index',{username : username})
+            })
+            .catch((err) => {   
+                console.log(err)
+            });
+            
+        } else {
+            res.send('<h1>You are not authenticated</h1><p><a href="/">Login</a></p>');
+        }
     }
+    
 });
 
-router.get('/logout', (req, res, next) => {
+router.get('/logout', (req, res) => {
     req.logout();
     res.redirect('/')
 });
 
 
-router.get('/wrong-password', (req, res, next) => {
+router.get('/wrong-password', (req, res) => {
     res.send('<h1>Login failed</h1>');
 });
-router.get('/username-taken', (req, res, next) => {
+router.get('/username-taken', (req, res) => {
     res.send('<h1>Username already taken.</h1>');
 });
 

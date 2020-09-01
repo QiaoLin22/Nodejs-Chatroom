@@ -4,7 +4,7 @@ const session = require('express-session');
 var passport = require('passport');
 var routes = require('./routes');
 const path = require('path')
-const connection = require('./config/database');
+const connection = require('./config/model');
 const Mongosession = require('connect-mongo')(session);
 const mongodb = require('mongodb').MongoClient
 const socketclient = require('socket.io').listen(5000).sockets
@@ -25,7 +25,7 @@ app.use(session({
     saveUninitialized: true,
     store: sessiondb,
     cookie: {
-        maxAge: 1000 * 60 * 60 * 24
+        maxAge: 1000 * 10 * 1 * 1
     }
 }));
 
