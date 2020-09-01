@@ -2,7 +2,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const connectdb = require('./model');
 const User = connectdb.models.User;
-const validatePassword = require('../lib/psMiddleware').validatePs;
+const validatePassword = require('../middleware/psMiddleware').validatePs;
 
 
 const verifyPassword = (username, password, done) => {

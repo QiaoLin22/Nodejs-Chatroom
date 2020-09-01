@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const passport = require('passport');
-const savePassword = require('../lib/psMiddleware').savePs;
+const savePassword = require('../middleware/psMiddleware').savePs;
 const connectdb = require('../config/model')
 const User = connectdb.models.User;
 const path = require('path')
