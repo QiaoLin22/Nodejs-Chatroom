@@ -2,19 +2,17 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const connectdb = require('./model');
 const User = connectdb.models.User;
-const validatePassword = require('../middleware/psMiddleware').validatePs;
+const validatePs = require('../middleware/psMiddleware').validatePs;
 
 
-const verifyPassword = (username, password, done) => {
+const verifyPs = (username, password, done) => {
 
     User.findOne({ username: username })
         .then((user) => {
 
             if (!user) { return done(null, false) }
             
-            const isValid = validatePassword(password, user.hash, user.salt);
-            
-            if (isValid) {
+            if (validatePs(password, user.hash, user.salt)) {
                 return done(null, user);
             } else {
                 return done(null, false);
@@ -23,10 +21,9 @@ const verifyPassword = (username, password, done) => {
         .catch((err) => {   
             done(err);
         });
-
 }
 
-const strategy  = new LocalStrategy(verifyPassword);
+const strategy  = new LocalStrategy(verifyPs);
 
 passport.use(strategy);
 

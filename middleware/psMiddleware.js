@@ -1,18 +1,17 @@
 const crypto = require('crypto');
 
-function savePs(password) {
+function genPs(password) {
     var salt = crypto.randomBytes(32).toString('hex');
-    var hash = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex');
+    var hash = crypto.pbkdf2Sync(password, salt, 1000, 32, 'sha256').toString('hex');
     return {
-      salt: salt,
-      hash: hash
+      salt: salt,hash: hash
     };
 }
 
 function validatePs(password, hash, salt) {
-    var hashVerify = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex');
-    return hash === hashVerify;
+    var deHash = crypto.pbkdf2Sync(password, salt, 1000, 32, 'sha256').toString('hex');
+    return hash === deHash;
 }
 
 module.exports.validatePs = validatePs;
-module.exports.savePs = savePs;
+module.exports.genPs = genPs;

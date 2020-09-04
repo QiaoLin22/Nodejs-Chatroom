@@ -1,5 +1,4 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const session = require('express-session');
 var passport = require('passport');
 var routes = require('./routes');
@@ -21,12 +20,12 @@ const sessiondb = new Mongosession({ mongooseConnection: connection, collection:
 
 app.use(session({
     secret: process.env.SECRET,
-    resave: false,
-    saveUninitialized: true,
     store: sessiondb,
     cookie: {
         maxAge: 1000 * 10 * 1 * 1
-    }
+    },
+    resave: false,
+    saveUninitialized: true,
 }));
 
 app.use(passport.initialize());
@@ -34,7 +33,7 @@ app.use(passport.session());
 app.use(routes);
 app.listen(3000);
 
-mongodb.connect(process.env.DB_STRING, function(err,db){
+mongodb.connect(process.env.DB_STRING, (err,db) => {
     if(err){
         throw err;
     }

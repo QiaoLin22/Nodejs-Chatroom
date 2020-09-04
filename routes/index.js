@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const passport = require('passport');
-const savePassword = require('../middleware/psMiddleware').savePs;
+const savePassword = require('../middleware/psMiddleware').genPs;
 const connectdb = require('../config/model')
 const User = connectdb.models.User;
 const path = require('path')
@@ -13,13 +13,10 @@ const path = require('path')
         .then((user) => {
             if (!user){
                 const helper = savePassword(req.body.password);
-                const salt = helper.salt;
-                const hash = helper.hash;
                 const newUser = new User({
                 username: req.body.username,
-                hash: hash,
-                salt: salt,
-                admin: true
+                hash: helper.hash,
+                salt: helper.salt
                 });
 
                 newUser.save()
@@ -76,8 +73,6 @@ router.get('/logout', (req, res) => {
     req.logout();
     res.redirect('/')
 });
-
-
 router.get('/wrong-password', (req, res) => {
     res.send('<h1>Login failed</h1>');
 });
