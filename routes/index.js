@@ -5,7 +5,10 @@ const connectdb = require('../config/model')
 const User = connectdb.models.User;
 const path = require('path')
 
- router.post('/', passport.authenticate('local', { failureRedirect: '/wrong-password', successRedirect: '/chatroom' }));
+ router.post('/', passport.authenticate('local', {
+      failureRedirect: '/wrong-password', 
+      successRedirect: '/chatroom' 
+ }));
 
  router.post('/register', (req, res) => {
     const checkname = req.body.username
