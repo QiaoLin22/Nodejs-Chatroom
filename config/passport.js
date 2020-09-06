@@ -18,14 +18,10 @@ const verifyPs = (username, password, done) => {
                 return done(null, false);
             }
         })
-        .catch((err) => {   
-            done(err);
-        });
+        .catch(err => done(err))
 }
 
-const strategy  = new LocalStrategy(verifyPs);
-
-passport.use(strategy);
+passport.use(new LocalStrategy(verifyPs));
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
